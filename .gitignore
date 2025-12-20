@@ -416,3 +416,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+#Manualy added content
+*appsettings.json
+*.env
