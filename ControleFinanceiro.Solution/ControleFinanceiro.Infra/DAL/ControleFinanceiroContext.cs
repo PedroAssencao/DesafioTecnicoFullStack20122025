@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using ControleFinanceiro.Infra;
+﻿using ControleFinanceiro.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ControleFinanceiro.Infra.DAL;
-
+//Classe para configurar o contexto do banco de dados via entity framework
 public partial class ControleFinanceiroContext : DbContext
 {
     public ControleFinanceiroContext()
@@ -17,13 +15,11 @@ public partial class ControleFinanceiroContext : DbContext
     }
 
     public virtual DbSet<Categoria> Categorias { get; set; }
-
     public virtual DbSet<Pessoa> Pessoas { get; set; }
-
     public virtual DbSet<Transaco> Transacoes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:Chinook");
+        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:Chinook"); //resgate da connection string do appsettings.json
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

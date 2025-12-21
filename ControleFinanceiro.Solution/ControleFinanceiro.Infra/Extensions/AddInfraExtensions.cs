@@ -1,4 +1,6 @@
 ﻿using ControleFinanceiro.Infra.DAL;
+using ControleFinanceiro.Infra.Interfaces;
+using ControleFinanceiro.Infra.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,7 @@ namespace ControleFinanceiro.Infra.Extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("Chinook"));
             });
+            services.AddScoped(typeof(IBaseInterface<>), typeof(BaseRepository<>));
         }
     }
 }

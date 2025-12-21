@@ -1,4 +1,6 @@
-﻿using ControleFinanceiro.Infra.Extensions;
+﻿using ControleFinanceiro.API.Mapper.PessoaEntity;
+using ControleFinanceiro.Infra.Extensions;
+using ControleFinanceiro.Services.Extensions;
 
 namespace ControleFinanceiro.API.Extensions
 {
@@ -10,11 +12,18 @@ namespace ControleFinanceiro.API.Extensions
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddInfraStartUp(configuration);
+            services.AddServicesStartUp(configuration);
+            services.ConfigureMapper();
         }
 
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.StartConfiguration(configuration);
+        }
+
+        public static void ConfigureMapper(this IServiceCollection services)
+        {
+            services.AddScoped<IPessoaMapper, PessoaMapper>();
         }
 
         public static void Configure(this WebApplication app)

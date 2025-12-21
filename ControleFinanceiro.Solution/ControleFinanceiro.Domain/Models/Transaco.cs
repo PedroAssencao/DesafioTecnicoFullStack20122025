@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ControleFinanceiro.Infra;
+namespace ControleFinanceiro.Domain.Models;
 
 public partial class Transaco
 {
