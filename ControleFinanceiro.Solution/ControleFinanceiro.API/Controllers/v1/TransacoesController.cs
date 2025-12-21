@@ -19,15 +19,18 @@ namespace ControleFinanceiro.API.Controllers.v1
             _services = services;
         }
 
+        // Lista todas as transações
         [HttpGet("BuscarTodasAsTransacoes")]
         public async Task<IActionResult> getAllTransacoes()
         {
             try
             {
-                return Ok(_mapper.Map<List<TransacoesDTO.TranscacoesDTOView>>(await _services.getAllAsync()));
+                var transacoes = await _services.getAllAsync();
+                return Ok(_mapper.Map<List<TransacoesDTO.TranscacoesDTOView>>(transacoes));
             }
             catch (Exception ex)
             {
+                // Converte a string de erros em uma lista de objetos para o Frontend.
                 return BadRequest(new
                 {
                     Messages = ex.Message.Split(",")
@@ -36,19 +39,25 @@ namespace ControleFinanceiro.API.Controllers.v1
                 });
             }
         }
+
+        // Cria uma nova transação.
         [HttpPost("CriarTransacao")]
         public async Task<IActionResult> creatTransacao([FromBody] TransacoesDTO.transacoesDTOCreate model)
         {
             try
             {
+                // Converte o DTO simples para a entidade de domínio.
                 Transaco resultado = await _services.createAsync(_mapper.Map<Transaco>(model));
+
                 return Ok(_mapper.Map<TransacoesDTO.TranscacoesDTOView>(resultado));
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Messages = ex.Message.Split(",")
+                return BadRequest(new
+                {
+                    Messages = ex.Message.Split(",")
                     .Where(x => x.ToString().Length > 0)
-                    .Select(x => new { message = x.ToString()}) 
+                    .Select(x => new { message = x.ToString() })
                 });
             }
         }

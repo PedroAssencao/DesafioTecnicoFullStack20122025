@@ -5,21 +5,13 @@ namespace ControleFinanceiro.Domain.Models;
 public partial class Transaco
 {
     public int TraId { get; set; }
-
     public string TraDescricao { get; set; } = null!;
-
     public decimal TraValor { get; set; }
-
     public ETipoTransacaoEnum TraTipo { get; set; }
-
     public int PesId { get; set; }
-
     public int CatId { get; set; }
-
     public virtual Categoria Cat { get; set; } = null!;
-
     public virtual Pessoa Pes { get; set; } = null!;
-
     public string validate(bool? isUpdate = false) //Metodo para validação da entidade
     {
         string errorMsg = string.Empty;
@@ -38,7 +30,6 @@ public partial class Transaco
 
         return string.Empty;
     }
-
     private static string validateDescricao(Transaco model)
     {
         if (model.TraDescricao.Length > 200)
@@ -53,7 +44,6 @@ public partial class Transaco
 
         return string.Empty;
     }
-
     private static string validateValor(Transaco model)
     {
         if (model.TraValor <= 0)
@@ -70,7 +60,6 @@ public partial class Transaco
         }
         return string.Empty;
     }
-
     private static string validadePessoa(Transaco model)
     {
         if (model.PesId == 0)
@@ -80,7 +69,6 @@ public partial class Transaco
 
         return string.Empty;
     }
-
     private static string validateCategoria(Transaco model)
     {
         if (model.CatId == 0)
@@ -88,14 +76,24 @@ public partial class Transaco
             return "E obrigatorio informar uma categoria para transação";
         }
 
+        if ((model.Cat.CatFinalidade == ECategoriaEnum.Despesa && model.TraTipo == ETipoTransacaoEnum.Receita) ||
+            (model.Cat.CatFinalidade == ECategoriaEnum.Receita && model.TraTipo == ETipoTransacaoEnum.Despesa))
+        {
+            return $"O tipo da transação é {model.TraTipo.ToString()}, não poderá utilizar uma categoria que tenha a finalidade {model.Cat.CatFinalidade.ToString()}.";
+        }
+
         return string.Empty;
     }
-
     private static string validateTipoEPessoa(Transaco model)
     {
         if (model.Pes.PesIdade < 18 && model.TraTipo != ETipoTransacaoEnum.Despesa)
         {
             return $"Pessoas menores de idades, não podem conter transações do tipo {model.TraTipo.ToString()}. Apenas transações do tipo despesa são validas";
+        }
+
+        if (!Enum.IsDefined(typeof(ETipoTransacaoEnum), model.TraTipo))
+        {
+            return "O tipo de transação informada e invalida.";
         }
 
         return string.Empty;

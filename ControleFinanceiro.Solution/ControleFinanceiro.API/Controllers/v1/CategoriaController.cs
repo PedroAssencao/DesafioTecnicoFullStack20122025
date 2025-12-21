@@ -19,15 +19,18 @@ namespace ControleFinanceiro.API.Controllers.v1
             _services = services;
         }
 
+        // Endpoint para listagem de categorias com mapeamento para DTO de visualização.
         [HttpGet("BuscarTodasAsCategorias")]
         public async Task<IActionResult> getAllCategorias()
         {
             try
             {
-                return Ok(_mapper.Map<List<CategoriaDTO.CategoriaDTOView>>(await _services.getAllAsync()));
+                var listaCategorias = await _services.getAllAsync();
+                return Ok(_mapper.Map<List<CategoriaDTO.CategoriaDTOView>>(listaCategorias));
             }
             catch (Exception ex)
             {
+                // Tratamento de erro padronizado para retornar mensagens limpas ao frontend.
                 return BadRequest(new
                 {
                     Messages = ex.Message.Split(",")
@@ -36,16 +39,21 @@ namespace ControleFinanceiro.API.Controllers.v1
                 });
             }
         }
+
+        // Endpoint para criação de categoria, utilizando DTO para entrada e saída de dados.
         [HttpPost("CriarCategoria")]
         public async Task<IActionResult> createCategoria([FromBody] CategoriaDTO.CategoriaDTOCreate model)
         {
             try
             {
+                // Mapeia o DTO de entrada para a Entidade de Domínio e executa a persistência via Service.
                 Categoria resultado = await _services.createAsync(_mapper.Map<Categoria>(model));
+
                 return Ok(_mapper.Map<CategoriaDTO.CategoriaDTOView>(resultado));
             }
             catch (Exception ex)
             {
+                // Captura exceções de validação ou de banco e transforma a string de erros em um objeto JSON estruturado.
                 return BadRequest(new
                 {
                     Messages = ex.Message.Split(",")

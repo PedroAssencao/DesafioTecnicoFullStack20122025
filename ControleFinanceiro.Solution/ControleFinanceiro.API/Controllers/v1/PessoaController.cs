@@ -1,9 +1,8 @@
-﻿using AutoMapper; // Adicione este using
+﻿using AutoMapper;
 using ControleFinanceiro.API.DTO;
 using ControleFinanceiro.Domain.Models;
 using ControleFinanceiro.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace ControleFinanceiro.API.Controllers.v1
 {
@@ -20,6 +19,7 @@ namespace ControleFinanceiro.API.Controllers.v1
             _mapper = mapper;
         }
 
+        // Recupera todas as pessoas cadastradas mapeando para o DTO de visualização.
         [HttpGet("BuscarTodasAsPessoas")]
         public async Task<IActionResult> getAllPessoas()
         {
@@ -39,6 +39,7 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
         }
 
+        // Realiza o cadastro de uma nova pessoa validando os dados via domínio.
         [HttpPost("CadastrarNovaPessoa")]
         public async Task<IActionResult> createPessoa([FromBody] PessoaDTO.PessoaDTOCreate model)
         {
@@ -58,6 +59,7 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
         }
 
+        // Atualiza os dados de uma pessoa existente.
         [HttpPut("AtualizarPessoa")]
         public async Task<IActionResult> atualizarPessoa([FromBody] PessoaDTO.PessoaDTOUpdate model)
         {
@@ -77,6 +79,7 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
         }
 
+        // Remove uma pessoa do sistema através do ID.
         [HttpDelete("DeletarPessoa")]
         public async Task<IActionResult> deletePessoa(int id)
         {
