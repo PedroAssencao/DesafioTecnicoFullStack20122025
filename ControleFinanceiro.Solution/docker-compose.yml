@@ -1,0 +1,24 @@
+services:
+  db: 
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-database-server
+    environment:
+      SA_PASSWORD: "SenhaBancoDeDadosTeste.123"
+      ACCEPT_EULA: "Y"
+
+    ports:
+       - "1433:1434"
+    volumes:
+      - sql-data:/var/opt/mssql
+
+  controlefinanceiro.api:
+    image: ${DOCKER_REGISTRY-}controlefinanceiroapi
+    build:
+      context: .
+      dockerfile: ControleFinanceiro.API/Dockerfile
+    depends_on:
+      - db
+
+volumes:
+  sql-data:
+    driver: local
