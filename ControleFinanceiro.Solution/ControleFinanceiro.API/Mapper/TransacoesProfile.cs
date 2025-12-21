@@ -4,7 +4,7 @@ using ControleFinanceiro.Domain.Models;
 
 namespace ControleFinanceiro.API.Mapper
 {
-    public class TransacoesProfile : Profile
+    public class TransacoesProfile : Profile //utilizando do autoMapper para mappear as entidades dto para a entidade de negocio e visse e versa
     {
         public TransacoesProfile()
         {

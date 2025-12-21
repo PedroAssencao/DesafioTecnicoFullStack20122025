@@ -16,7 +16,7 @@ namespace ControleFinanceiro.Infra.Repository
             _context = context;
         }
 
-        public async Task<List<T>> getAllAsync() //metodo para listagem dos itens no banco
+        public virtual async Task<List<T>> getAllAsync() //metodo para listagem dos itens no banco
         {
             IQueryable<T> iQueryAble = _context.Set<T>(); //Definir a entidade para começar a consulta
 
@@ -31,7 +31,7 @@ namespace ControleFinanceiro.Infra.Repository
 
             return await iQueryAble.ToListAsync(); //Executar a consulta e retornar a lista de itens
         }
-        public async Task<T?> getByIdAsync(int id) //metodo para busca de um item expecifico pelo id
+        public virtual async Task<T?> getByIdAsync(int id) //metodo para busca de um item expecifico pelo id
         {
             IQueryable<T> query = _context.Set<T>(); //Definir a entidade para começar a consulta
 
@@ -58,13 +58,13 @@ namespace ControleFinanceiro.Infra.Repository
 
             return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, primaryKeyName) == id); //Executar a consulta e retornar o item com o id correspondente
         }
-        public async Task<T> createAsync(T model) //metodo para criação de um item
+        public virtual async Task<T> createAsync(T model) //metodo para criação de um item
         {
             var result = await _context.Set<T>().AddAsync(model);
             await _context.SaveChangesAsync();
             return result.Entity;
         }
-        public async Task<bool> updateAsync(T model) //metodo para atualização de um item
+        public virtual async Task<bool> updateAsync(T model) //metodo para atualização de um item
         {
             try
             {
@@ -77,7 +77,7 @@ namespace ControleFinanceiro.Infra.Repository
                 return false;
             }
         }
-        public async Task<bool> deleteAsync(int id) //metodo para deleção de um item
+        public virtual async Task<bool> deleteAsync(int id) //metodo para deleção de um item
         {
             var entity = await _context.Set<T>().FindAsync(id);
             if (entity == null) return false;

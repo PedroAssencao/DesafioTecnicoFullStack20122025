@@ -12,7 +12,7 @@ namespace ControleFinanceiro.Services.Services
         {
             _repository = repository;
         }
-        public async Task<List<T>> getAllAsync() //implementação do metodo para resgatar todos os itens
+        public virtual async Task<List<T>> getAllAsync() //implementação do metodo para resgatar todos os itens
         {
             try
             {
@@ -23,7 +23,7 @@ namespace ControleFinanceiro.Services.Services
                 throw new Exception("Ocorreu um error ao tentar resgatar todos os itens, error: " + ex.Message);
             }
         }
-        public async Task<T?> getByIdAsync(int id) //implementação do metodo para resgatar um item pelo id
+        public virtual async Task<T?> getByIdAsync(int id) //implementação do metodo para resgatar um item pelo id
         {
             try
             {
@@ -72,7 +72,7 @@ namespace ControleFinanceiro.Services.Services
             }
         }
 
-        public async Task<bool> deleteAsync(int id) //implementação do metodo para deleção de um item
+        public virtual async Task<bool> deleteAsync(int id) //implementação do metodo para deleção de um item
         {
             try
             {

@@ -3,6 +3,7 @@ using ControleFinanceiro.API.DTO;
 using ControleFinanceiro.Domain.Models;
 using ControleFinanceiro.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace ControleFinanceiro.API.Controllers.v1
 {
@@ -39,7 +40,7 @@ namespace ControleFinanceiro.API.Controllers.v1
             try
             {
                 Pessoa resultado = await _services.createAsync(_mapper.Map<Pessoa>(model));
-                return Ok(resultado);
+                return Ok(_mapper.Map<PessoaDTO.PessoaDTOView>(resultado));
             }
             catch (Exception ex)
             {

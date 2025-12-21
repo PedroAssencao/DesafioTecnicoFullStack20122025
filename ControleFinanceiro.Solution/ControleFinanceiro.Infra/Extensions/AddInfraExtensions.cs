@@ -16,6 +16,8 @@ namespace ControleFinanceiro.Infra.Extensions
                 options.UseSqlServer(configuration.GetConnectionString("Chinook"));
             });
             services.AddScoped(typeof(IBaseInterface<>), typeof(BaseRepository<>));
+            services.AddScoped<IPessoaInterface, PessoaRepository>();
+            services.AddScoped<ICategoriaInterface, CategoriaRepository>();
         }
     }
 }

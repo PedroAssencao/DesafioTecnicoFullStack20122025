@@ -13,6 +13,7 @@ namespace ControleFinanceiro.Services.Extensions
         {
             services.AddScoped(typeof(IBaseInterface<>), typeof(BaseRepository<>));
             services.AddScoped<IPessoaServices, PessoaServices>();
+            services.AddScoped<ICategoriaService, CategoriaServices>();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace ControleFinanceiro.API.Extensions
 {
     public static class StartUp
     {
-        //StartUp the configurations
+        //StartUp as configurações
         public static void StartConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers();
