@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ControleFinanceiro.Domain.Enums.Base;
 
 namespace ControleFinanceiro.Domain.Models;
 
@@ -11,7 +10,7 @@ public partial class Transaco
 
     public decimal TraValor { get; set; }
 
-    public int TraTipo { get; set; }
+    public ETipoTransacaoEnum TraTipo { get; set; }
 
     public int PesId { get; set; }
 

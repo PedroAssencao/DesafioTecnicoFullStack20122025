@@ -1,5 +1,6 @@
-﻿using ControleFinanceiro.API.DTO;
-using ControleFinanceiro.API.Mapper.PessoaEntity;
+﻿using AutoMapper; // Adicione este using
+using ControleFinanceiro.API.DTO;
+using ControleFinanceiro.Domain.Models;
 using ControleFinanceiro.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,12 +11,12 @@ namespace ControleFinanceiro.API.Controllers.v1
     public class PessoaController : ControllerBase
     {
         protected readonly IPessoaServices _services;
-        protected readonly IPessoaMapper _mapper;
+        protected readonly IMapper _mapper;
 
-        public PessoaController(IPessoaServices services, IPessoaMapper pessoaMapper)
+        public PessoaController(IPessoaServices services, IMapper mapper)
         {
             _services = services;
-            _mapper = pessoaMapper;
+            _mapper = mapper;
         }
 
         [HttpGet("BuscarTodasAsPessoas")]
@@ -23,37 +24,43 @@ namespace ControleFinanceiro.API.Controllers.v1
         {
             try
             {
-                return Ok(_mapper.MapListPessoaParaListPessoaDTO(await _services.getAllAsync()));
+                List<PessoaDTO.PessoaDTOView> listaDto = _mapper.Map<List<PessoaDTO.PessoaDTOView>>(await _services.getAllAsync());
+                return Ok(listaDto);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { ex.Message });
             }
         }
+
         [HttpPost("CadastrarNovaPessoa")]
         public async Task<IActionResult> createPessoa([FromBody] PessoaDTO.PessoaDTOCreate model)
         {
             try
             {
-                return Ok(await _services.createAsync(_mapper.MapPessoaDtoCreateParaPessoa(model)));
+                Pessoa resultado = await _services.createAsync(_mapper.Map<Pessoa>(model));
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { ex.Message });
             }
         }
+
         [HttpPut("AtualizarPessoa")]
         public async Task<IActionResult> atualizarPessoa([FromBody] PessoaDTO.PessoaDTOUpdate model)
         {
             try
             {
-                return Ok(await _services.updateAsync(_mapper.MapPessoaDtoUpdateParaPessoa(model)));
+                bool resultado = await _services.updateAsync(_mapper.Map<Pessoa>(model));
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { ex.Message });
             }
         }
+
         [HttpDelete("DeletarPessoa")]
         public async Task<IActionResult> deletePessoa(int id)
         {

@@ -16,8 +16,48 @@ namespace ControleFinanceiro.Infra.Repository
             _context = context;
         }
 
-        public async Task<List<T>> getAllAsync() => await _context.Set<T>().ToListAsync(); //metodo para listagem dos itens no banco
-        public async Task<T?> getByIdAsync(int id) => await _context.Set<T>().FindAsync(id); //metodo para busca de um item expecifico pelo id
+        public async Task<List<T>> getAllAsync() //metodo para listagem dos itens no banco
+        {
+            IQueryable<T> iQueryAble = _context.Set<T>(); //Definir a entidade para começar a consulta
+
+            var navigationProperties = _context.Model.FindEntityType(typeof(T))?
+                .GetNavigations()
+                .Select(e => e.Name); //Resgatar todas as propriedades de navegação da entidade
+
+            foreach (var item in navigationProperties!) //Incluir todas as propriedades de navegação na consulta. Ex: pessoa -> transações
+            {
+                iQueryAble = iQueryAble.Include(item);
+            }
+
+            return await iQueryAble.ToListAsync(); //Executar a consulta e retornar a lista de itens
+        }
+        public async Task<T?> getByIdAsync(int id) //metodo para busca de um item expecifico pelo id
+        {
+            IQueryable<T> query = _context.Set<T>(); //Definir a entidade para começar a consulta
+
+            var navigationProperties = _context.Model.FindEntityType(typeof(T))!
+                .GetNavigations()
+                .Select(n => n.Name); //Resgatar todas as propriedades de navegação da entidade
+
+            foreach (var property in navigationProperties) //Incluir todas as propriedades de navegação na consulta. Ex: pessoa -> transações
+            {
+                query = query.Include(property);
+            }
+
+            //Como e um metodo generico, e não temos como saber a exata entidade que e o id do objeto, fazemos essa busca para achar qual e o atributo que representa a chave primaria
+            var primaryKeyName = _context?.Model?.FindEntityType(typeof(T))
+                ?.FindPrimaryKey()
+                ?.Properties
+                ?.Select(p => p.Name)
+                ?.FirstOrDefault();
+
+            if (primaryKeyName == null) //se não achar a chave primaria, lançar um erro
+            {
+                throw new InvalidOperationException($"A entidade {typeof(T).Name} não possui uma chave primária definida.");
+            }
+
+            return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, primaryKeyName) == id); //Executar a consulta e retornar o item com o id correspondente
+        }
         public async Task<T> createAsync(T model) //metodo para criação de um item
         {
             var result = await _context.Set<T>().AddAsync(model);

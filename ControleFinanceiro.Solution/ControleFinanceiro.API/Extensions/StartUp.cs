@@ -1,8 +1,12 @@
-﻿using ControleFinanceiro.API.Mapper.PessoaEntity;
+﻿using ControleFinanceiro.API.Mapper;
+using ControleFinanceiro.API.Mapper.CategoriaEntity;
+using ControleFinanceiro.API.Mapper.PessoaEntity;
+using ControleFinanceiro.API.Mapper.TransacoesEntity;
 using ControleFinanceiro.Infra.DAL;
 using ControleFinanceiro.Infra.Extensions;
 using ControleFinanceiro.Services.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ControleFinanceiro.API.Extensions
 {
@@ -27,6 +31,14 @@ namespace ControleFinanceiro.API.Extensions
         public static void ConfigureMapper(this IServiceCollection services)
         {
             services.AddScoped<IPessoaMapper, PessoaMapper>();
+            services.AddScoped<ICategoriaMapper, CategoriaMapper>();
+            services.AddScoped<ITransacoesMapper, TransacoesMapper>();
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<PessoaProfile>();
+                cfg.AddProfile<TransacoesProfile>();
+                cfg.AddProfile<CategoriaProfile>();
+            });
         }
 
         public static void Configure(this WebApplication app)
@@ -38,6 +50,7 @@ namespace ControleFinanceiro.API.Extensions
                 app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
                 });
             }
 
