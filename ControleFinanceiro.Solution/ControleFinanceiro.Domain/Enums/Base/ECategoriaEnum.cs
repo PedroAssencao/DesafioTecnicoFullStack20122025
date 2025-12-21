@@ -2,8 +2,8 @@
 {
     public enum ECategoriaEnum
     {
-        despesa = 1,
-        receita = 2,
-        ambas = 3
+        Despesa = 1,
+        Receita = 2,
+        Ambas = 3
     }
 }

@@ -5,7 +5,9 @@ namespace ControleFinanceiro.API.Mapper.PessoaEntity
 {
     public interface IPessoaMapper
     {
-        Pessoa MapPessoaDtoParaPessoa(PessoaDTO model);
-        List<PessoaDTO> MapListPessoaParaListPessoaDTO(List<Pessoa> listModel);
+        Pessoa MapPessoaDtoViewParaPessoa(PessoaDTO.PessoaDTOView model);
+        Pessoa MapPessoaDtoCreateParaPessoa(PessoaDTO.PessoaDTOCreate model);
+        Pessoa MapPessoaDtoUpdateParaPessoa(PessoaDTO.PessoaDTOUpdate model);
+        List<PessoaDTO.PessoaDTOView> MapListPessoaParaListPessoaDTO(List<Pessoa> listModel);
     }
 }

@@ -3,7 +3,7 @@ using ControleFinanceiro.Services.Interface;
 
 namespace ControleFinanceiro.Services.Services
 {
-    //classe generica criada para implementar os metodos basicos de CRUD com regras basicas
+    //classe generica criada para implementar os metodos basicos de CRUD com regras genericas
     public class BaseServices<T> : IBaseServices<T> where T : class
     {
         protected readonly IBaseInterface<T> _repository;
@@ -20,10 +20,10 @@ namespace ControleFinanceiro.Services.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Ocorreu um error ao tentar resgatar todos os itens, error: " + ex.Message); //logar qualquer error que ocorra
+                throw new Exception("Ocorreu um error ao tentar resgatar todos os itens, error: " + ex.Message);
             }
         }
-        public async Task<T?> getByIdAsync(int id)
+        public async Task<T?> getByIdAsync(int id) //implementação do metodo para resgatar um item pelo id
         {
             try
             {
@@ -36,35 +36,35 @@ namespace ControleFinanceiro.Services.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Ocorreu um error ao tentar resgatar o item, error: " + ex.Message); //logar qualquer error que ocorra
+                throw new Exception("Ocorreu um error ao tentar resgatar o item, error: " + ex.Message);
             }
         }
-        public virtual async Task<T> createAsync(T model)
+        public virtual async Task<T> createAsync(T model) //implementação do metodo para criação de um item
         {
             try
             {
-                if (model == null)
+                if (model == null) //verificação basica para saber se o model enviado e nulo
                 {
                     throw new Exception("O modelo para criação do item e obrigatorio");
                 }
 
-                return await _repository.createAsync(model);
+                return await _repository.createAsync(model); //chamada do metodo no repositorio
             }
             catch (Exception ex)
             {
                 throw new Exception("Ocorreu um error ao tentar criar o item, error: " + ex.Message);
             }
         }
-        public async Task<bool> updateAsync(T model)
+        public virtual async Task<bool> updateAsync(T model) //implementação do metodo para atualização de um item
         {
             try
             {
-                if (model == null)
+                if (model == null) //verificação basica para saber se o model enviado e nulo
                 {
                     throw new Exception("O modelo para atualização do item e obrigatorio");
                 }
 
-                return await _repository.updateAsync(model);
+                return await _repository.updateAsync(model); //chamada do metodo no repositorio
             }
             catch (Exception ex)
             {
@@ -72,16 +72,16 @@ namespace ControleFinanceiro.Services.Services
             }
         }
 
-        public async Task<bool> deleteAsync(int id)
+        public async Task<bool> deleteAsync(int id) //implementação do metodo para deleção de um item
         {
             try
             {
-                if (id <= 0)
+                if (id <= 0) //verificação basica para saber se o id e invalido para deleção do item
                 {
                     throw new Exception("O id informado e invalido");
                 }
 
-                return await _repository.deleteAsync(id);
+                return await _repository.deleteAsync(id); //chamada do metodo no repositorio
             }
             catch (Exception ex)
             {

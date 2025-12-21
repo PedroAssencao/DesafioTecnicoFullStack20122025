@@ -2,7 +2,7 @@
 {
     public enum ETipoTransacaoEnum
     {
-        despesa = 1,
-        receita = 2,
+        Despesa = 1,
+        Receita = 2,
     }
 }

@@ -31,11 +31,11 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
         }
         [HttpPost("CadastrarNovaPessoa")]
-        public async Task<IActionResult> createPessoa([FromBody] PessoaDTO model)
+        public async Task<IActionResult> createPessoa([FromBody] PessoaDTO.PessoaDTOCreate model)
         {
             try
             {
-                return Ok(await _services.createAsync(_mapper.MapPessoaDtoParaPessoa(model)));
+                return Ok(await _services.createAsync(_mapper.MapPessoaDtoCreateParaPessoa(model)));
             }
             catch (Exception ex)
             {
@@ -43,11 +43,11 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
         }
         [HttpPut("AtualizarPessoa")]
-        public async Task<IActionResult> atualizarPessoa([FromBody] PessoaDTO model)
+        public async Task<IActionResult> atualizarPessoa([FromBody] PessoaDTO.PessoaDTOUpdate model)
         {
             try
             {
-                return Ok(await _services.updateAsync(_mapper.MapPessoaDtoParaPessoa(model)));
+                return Ok(await _services.updateAsync(_mapper.MapPessoaDtoUpdateParaPessoa(model)));
             }
             catch (Exception ex)
             {

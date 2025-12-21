@@ -22,5 +22,16 @@ namespace ControleFinanceiro.Services.Services
 
             return await _repository.createAsync(model);
         }
+
+        public override async Task<bool> updateAsync(Pessoa model)
+        {
+            string validate = model.validate(true);
+            if (!validate.IsNullOrEmpty())
+            {
+                throw new ValidationException(validate);
+            }
+
+            return await _repository.updateAsync(model);
+        }
     }
 }

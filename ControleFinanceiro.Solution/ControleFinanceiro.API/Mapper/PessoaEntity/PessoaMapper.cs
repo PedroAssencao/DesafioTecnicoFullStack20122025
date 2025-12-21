@@ -5,7 +5,7 @@ namespace ControleFinanceiro.API.Mapper.PessoaEntity
 {
     public class PessoaMapper : IPessoaMapper
     {
-        public Pessoa MapPessoaDtoParaPessoa(PessoaDTO model)
+        public Pessoa MapPessoaDtoViewParaPessoa(PessoaDTO.PessoaDTOView model)
         {
             return new Pessoa
             {
@@ -15,13 +15,13 @@ namespace ControleFinanceiro.API.Mapper.PessoaEntity
             };
         }
 
-        public List<PessoaDTO> MapListPessoaParaListPessoaDTO(List<Pessoa> listModel)
+        public List<PessoaDTO.PessoaDTOView> MapListPessoaParaListPessoaDTO(List<Pessoa> listModel)
         {
-            List<PessoaDTO> list = new List<PessoaDTO>();
+            List<PessoaDTO.PessoaDTOView> list = new List<PessoaDTO.PessoaDTOView>();
 
             foreach (var item in listModel)
             {
-                list.Add(new PessoaDTO
+                list.Add(new PessoaDTO.PessoaDTOView
                 {
                     Codigo = item.PesId,
                     Nome = item.PesNome,
@@ -30,6 +30,25 @@ namespace ControleFinanceiro.API.Mapper.PessoaEntity
             }
 
             return list;
+        }
+
+        public Pessoa MapPessoaDtoCreateParaPessoa(PessoaDTO.PessoaDTOCreate model)
+        {
+            return new Pessoa
+            {
+                PesNome = model.Nome,
+                PesIdade = model.Idade
+            };
+        }
+
+        public Pessoa MapPessoaDtoUpdateParaPessoa(PessoaDTO.PessoaDTOUpdate model)
+        {
+            return new Pessoa
+            {
+                PesId = model.Codigo,
+                PesNome = model.Nome,
+                PesIdade = model.Idade
+            };
         }
     }
 }

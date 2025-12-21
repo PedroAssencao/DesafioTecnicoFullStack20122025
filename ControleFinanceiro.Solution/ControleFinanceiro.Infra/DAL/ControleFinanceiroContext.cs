@@ -18,6 +18,7 @@ public partial class ControleFinanceiroContext : DbContext
     public virtual DbSet<Pessoa> Pessoas { get; set; }
     public virtual DbSet<Transaco> Transacoes { get; set; }
 
+    //Name=ConnectionStrings:Chinook
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=ConnectionStrings:Chinook"); //resgate da connection string do appsettings.json
 
