@@ -30,7 +30,12 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex.Message });
+                return BadRequest(new
+                {
+                    Messages = ex.Message.Split(",")
+                    .Where(x => x.ToString().Length > 0)
+                    .Select(x => new { message = x.ToString() })
+                });
             }
         }
 
@@ -44,7 +49,12 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex.Message });
+                return BadRequest(new
+                {
+                    Messages = ex.Message.Split(",")
+                    .Where(x => x.ToString().Length > 0)
+                    .Select(x => new { message = x.ToString() })
+                });
             }
         }
 
@@ -58,7 +68,12 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex.Message });
+                return BadRequest(new
+                {
+                    Messages = ex.Message.Split(",")
+                    .Where(x => x.ToString().Length > 0)
+                    .Select(x => new { message = x.ToString() })
+                });
             }
         }
 
@@ -71,7 +86,12 @@ namespace ControleFinanceiro.API.Controllers.v1
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex.Message });
+                return BadRequest(new
+                {
+                    Messages = ex.Message.Split(",")
+                    .Where(x => x.ToString().Length > 0)
+                    .Select(x => new { message = x.ToString() })
+                });
             }
         }
     }

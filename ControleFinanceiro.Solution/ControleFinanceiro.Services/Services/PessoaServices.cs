@@ -16,7 +16,7 @@ namespace ControleFinanceiro.Services.Services
         public override async Task<Pessoa> createAsync(Pessoa model)
         {
             string validate = model.validate();
-            if (validate != "")
+            if (validate.Replace(",", "").Trim() != "")
             {
                 throw new ValidationException(validate);
             }
@@ -27,7 +27,7 @@ namespace ControleFinanceiro.Services.Services
         public override async Task<bool> updateAsync(Pessoa model)
         {
             string validate = model.validate(true);
-            if (validate != "")
+            if (validate.Replace(",", "").Trim() != "")
             {
                 throw new ValidationException(validate);
             }

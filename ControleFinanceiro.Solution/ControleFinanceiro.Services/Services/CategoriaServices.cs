@@ -17,7 +17,7 @@ namespace ControleFinanceiro.Services.Services
         public override Task<Categoria> createAsync(Categoria model)
         {
             string validate = model.validate();
-            if (validate != "")
+            if (validate.Replace(",", "").Trim() != "")
             {
                 throw new ValidationException(validate);
             }

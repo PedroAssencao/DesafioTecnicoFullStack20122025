@@ -11,10 +11,11 @@ public partial class Categoria
     public string validate(bool? isUpdate = false) //Metodo para validação da entidade
     {
         string errorMsg = string.Empty;
-        errorMsg = validateDescricao(this); //Metodo para validar a descricao da categoria
+        errorMsg = validateDescricao(this) + ","; //Metodo para validar a descricao da categoria
+        errorMsg = validateFinalidade(this) + ","; //Metodo para validar a finalidade da categoria
         if (isUpdate.HasValue && isUpdate.Value == true) //metodos que precisam ser validados apenas na atualização
         {
-            errorMsg = validateId(this);
+            errorMsg = validateId(this) + ",";
         }
         if (errorMsg != "") return errorMsg;
 
@@ -27,8 +28,21 @@ public partial class Categoria
             return "A descricao informada contem mais de 100 caracteres.";
         }
 
+        if (model.CatDescricao.Length == 0)
+        {
+            return "O campo descrição e obrigatorio";
+        }
+
         return "";
     }
+    private static string validateFinalidade(Categoria model)
+    {
+        if (!Enum.IsDefined(typeof(ECategoriaEnum), model.CatFinalidade))
+        {
+            return "A finalidade informada e invalida.";
+        }
+        return string.Empty;
+    }   
     private static string validateId(Categoria model)
     {
         if (model.CatId <= 0)
