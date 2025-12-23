@@ -1,24 +1,36 @@
 import Card from "../../components/Card/card";
 import { getPessoas } from "../../services/pessoaServices";
+import { getCategorias } from "../../services/categoriaServices";
+import { getTransacoes } from "../../services/transacaoServices";
 import { useEffect, useState } from "react";
 import { type Pessoa } from "../../types/baseTypes/Pessoa";
 
 import "./style.css";
+import type { Categoria } from "../../types/baseTypes/Categoria";
+import type { Transacao } from "../../types/baseTypes/Transacao";
+import Loader from "../../components/Loader/Loader";
 
 export default function Dashboard() {
   const [listPessoas, setListPessoas] = useState<Pessoa[]>([]);
+  const [listCategorias, setListCategorias] = useState<Categoria[]>([]);
+  const [listTransacoes, setListTransacoes] = useState<Transacao[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchData() {
       const pessoas = await getPessoas();
-      console.log("Lista de pessoas dentro da função", pessoas);
+      const categorias = await getCategorias();
+      const transacoes = await getTransacoes();
+      setListCategorias(categorias);
+      setListTransacoes(transacoes);
       setListPessoas(pessoas);
+      setLoading(false);
     }
     fetchData();
   }, []);
-  console.log(listPessoas);
   return (
     <>
+      {loading && <Loader />}
       <div className={"card-grid-dashboard"}>
         <Card
           className="card-fullScreen"

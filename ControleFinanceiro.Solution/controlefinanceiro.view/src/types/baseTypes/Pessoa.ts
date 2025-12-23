@@ -6,3 +6,14 @@ export interface Pessoa {
   idade: number;
   transacoes: Transacao[];
 }
+
+export interface PessoaCriarDTO {
+  nome: string;
+  idade: number;
+}
+
+export interface PessoaAtualizarDTO {
+  codigo: number;
+  nome: string;
+  idade: number;
+}

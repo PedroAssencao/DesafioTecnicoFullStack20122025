@@ -1,4 +1,5 @@
 import { type Categoria } from "./Categoria";
+import { type Pessoa } from "./Pessoa";
 
 export interface TipoTransacao {
   codigo: number;
@@ -11,4 +12,13 @@ export interface Transacao {
   valor: number;
   tipo: TipoTransacao;
   categoria: Categoria;
+  pessoa: Pessoa;
+}
+
+export interface TransacaoCriarDTO {
+  descricao: string;
+  valor: number;
+  tipo: number;
+  categoriaCodigo: number;
+  pessoaCodigo: number;
 }
