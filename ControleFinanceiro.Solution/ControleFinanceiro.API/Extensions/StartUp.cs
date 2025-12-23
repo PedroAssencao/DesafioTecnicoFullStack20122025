@@ -17,6 +17,7 @@ namespace ControleFinanceiro.API.Extensions
             services.AddInfraStartUp(configuration);
             services.AddServicesStartUp(configuration);
             services.ConfigureMapper();
+            services.ConfigureCors();
         }
 
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
@@ -31,6 +32,26 @@ namespace ControleFinanceiro.API.Extensions
                 cfg.AddProfile<PessoaProfile>();
                 cfg.AddProfile<TransacoesProfile>();
                 cfg.AddProfile<CategoriaProfile>();
+            });
+        }
+
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("frontEndWebInterface", builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000")
+                           .AllowAnyHeader()
+                           .AllowCredentials()
+                           .AllowAnyMethod();
+                    //builder.AllowAnyOrigin()
+                    //       .AllowAnyHeader()
+                    //       .AllowAnyMethod();
+                    //builder.WithOrigins("http://localhost:3000") //Futuramente coloca a URL do front-end hospedado
+                    //       .AllowAnyHeader()
+                    //       .AllowAnyMethod();
+                });
             });
         }
 
@@ -61,6 +82,8 @@ namespace ControleFinanceiro.API.Extensions
                     logger.LogError(ex, "Um error ocorreu ao tentar realizar a migration");
                 }
             }
+
+            app.UseCors("frontEndWebInterface");
 
             app.UseHttpsRedirection();
             app.MapControllers();

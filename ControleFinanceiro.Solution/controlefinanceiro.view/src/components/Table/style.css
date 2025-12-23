@@ -1,0 +1,11 @@
+.table-component {
+  width: 100%;
+  height: 100%;
+}
+
+.table-component td,
+tr,
+th {
+  min-height: 16px;
+  padding: 8px;
+}
