@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { tbodyItem } from "../../types/systemTypes/TableInterface";
 import Table from "../Table/Table";
 import "./style.css";
@@ -7,6 +8,8 @@ export default function Card(props: {
   hasFooter?: boolean;
   hasHeader?: boolean;
   hasTable?: boolean;
+  hasBodyComponent?: boolean;
+  BodyComponent?: ReactNode;
   tableHead?: string[];
   tableBodyItems?: tbodyItem[];
   title?: string;
@@ -25,6 +28,7 @@ export default function Card(props: {
             tbodyItems={props.tableBodyItems ?? []}
           />
         )}
+        {props.hasBodyComponent && <>{props.BodyComponent}</>}
       </div>
       {props.hasFooter && <div className="card-container-footer"></div>}
     </div>

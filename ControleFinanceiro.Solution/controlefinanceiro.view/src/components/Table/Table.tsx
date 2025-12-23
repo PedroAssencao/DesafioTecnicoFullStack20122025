@@ -1,5 +1,6 @@
 import "./style.css";
 import { type tbodyItem } from "../../types/systemTypes/TableInterface";
+import Button from "../Button/Button";
 
 export default function Table(props: {
   Thead: string[];
@@ -22,16 +23,20 @@ export default function Table(props: {
             ))}
             {row.editFunction != undefined && (
               <td>
-                <button onClick={() => row.editFunction?.(row.items[0])}>
-                  Edit
-                </button>
+                <Button
+                  descricao={"Edit"}
+                  className={"button-delete"}
+                  onClick={() => row.editFunction?.(row.items[0])}
+                />
               </td>
             )}
             {row.deleteFunction != undefined && (
               <td>
-                <button onClick={() => row.deleteFunction?.(row.items[0])}>
-                  Delete
-                </button>
+                <Button
+                  descricao={"Delete"}
+                  className={"button-delete"}
+                  onClick={() => row.deleteFunction?.(row.items[0])}
+                />
               </td>
             )}
           </tr>

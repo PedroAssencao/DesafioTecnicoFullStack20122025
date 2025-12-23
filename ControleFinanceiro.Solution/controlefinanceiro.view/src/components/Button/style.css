@@ -1,0 +1,11 @@
+.custom-button{
+    padding: 8px 16px;
+    border: 1px solid #33363d;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.button-delete{
+    background-color: #f87171;
+    color: white;
+}
