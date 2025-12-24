@@ -17,9 +17,10 @@ public partial class Categoria
         {
             errorMsg += validateId(this) + ",";
         }
-        if (errorMsg != "") return errorMsg;
 
-        return string.Empty;
+        if (errorMsg.Replace(",", "").Trim() == "") return string.Empty;
+
+        return errorMsg;
     }
     private static string validateDescricao(Categoria model)
     {

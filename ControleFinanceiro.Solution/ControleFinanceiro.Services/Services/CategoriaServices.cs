@@ -27,7 +27,7 @@ namespace ControleFinanceiro.Services.Services
             string validate = model.validate();
 
             // Interrompe o fluxo caso existam inconsistências nos dados informados.
-            if (validate.Replace(",", "").Trim() != "")
+            if (validate != "")
             {
                 throw new ValidationException(validate);
             }

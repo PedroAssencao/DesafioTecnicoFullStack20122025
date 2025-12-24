@@ -40,7 +40,7 @@ namespace ControleFinanceiro.Services.Services
         {
             string validate = model.validate(true); //metodo de validação da entidade
 
-            if (validate.Replace(",", "").Trim() != "")
+            if (validate != "")
             {
                 throw new ValidationException(validate);
             }

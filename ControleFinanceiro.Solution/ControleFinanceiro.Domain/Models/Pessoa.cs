@@ -17,9 +17,9 @@ public partial class Pessoa
             errorMsg += validateId(this) + ",";
         }
 
-        if (errorMsg != "") return errorMsg;
+        if (errorMsg.Replace(",", "").Trim() == "") return string.Empty;
 
-        return string.Empty;
+        return errorMsg;
     }
     private static string validateIdade(Pessoa Model) //Implementação do metodo para validar idade da pessoa
     {

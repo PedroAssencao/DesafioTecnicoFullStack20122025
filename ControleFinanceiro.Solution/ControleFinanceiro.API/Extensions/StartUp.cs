@@ -9,20 +9,20 @@ namespace ControleFinanceiro.API.Extensions
     public static class StartUp
     {
         //StartUp as configurações
-        public static void StartConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static void StartConfiguration(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            services.AddInfraStartUp(configuration);
+            services.AddInfraStartUp(configuration, environment);
             services.AddServicesStartUp(configuration);
             services.ConfigureMapper();
             services.ConfigureCors();
         }
 
-        public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration, IHostEnvironment environment)
         {
-            services.StartConfiguration(configuration);
+            services.StartConfiguration(configuration, environment);
         }
 
         public static void ConfigureMapper(this IServiceCollection services)
@@ -83,8 +83,8 @@ namespace ControleFinanceiro.API.Extensions
                 }
             }
 
-            app.UseCors("frontEndWebInterface");
 
+            app.UseCors("frontEndWebInterface");
             app.UseHttpsRedirection();
             app.MapControllers();
         }

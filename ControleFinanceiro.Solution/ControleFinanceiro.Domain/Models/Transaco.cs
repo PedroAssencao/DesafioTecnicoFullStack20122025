@@ -26,9 +26,9 @@ public partial class Transaco
             errorMsg = validateId(this) + ",";
         }
 
-        if (errorMsg != "") return errorMsg;
+        if (errorMsg.Replace(",", "").Trim() == "") return string.Empty;
 
-        return string.Empty;
+        return errorMsg;
     }
     private static string validateDescricao(Transaco model)
     {

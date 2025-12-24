@@ -20,19 +20,24 @@ namespace ControleFinanceiro.Services.Services
         // Sobrescrita para garantir que a transação possua os objetos relacionados antes de validar e persistir.
         public override async Task<Transaco> createAsync(Transaco model)
         {
-            // Busca e anexa a Pessoa e Categoria completas para permitir validações de regra de negócio (ex: idade vs tipo)
-            // e garantir que o retorno da API contenha as informações relacionadas.,
-            model.Pes = await _pessoaServices.getByIdAsync(model.PesId) ?? throw new Exception("Pessoa não encontrada para a transação");
-            model.Cat = await _categoriaService.getByIdAsync(model.CatId) ?? throw new Exception("Categoria não encontrada para a transação");
+            //Povoar os objetos relacionados Pessoa e Categoria
+            await povoarPessoaECategoria(model);
 
             // Validação de domínio com os objetos Pessoa e Categoria já carregados no estado do modelo.
             string validate = model.validate();
-            if (validate.Replace(",", "").Trim() != "")
+            if (validate != "")
             {
                 throw new ValidationException(validate);
             }
 
             return await base.createAsync(model);
+        }
+        private async Task povoarPessoaECategoria(Transaco model)
+        {
+            // Busca e anexa a Pessoa e Categoria completas para permitir validações de regra de negócio (ex: idade vs tipo)
+            // e garantir que o retorno da API contenha as informações relacionadas.,
+            model.Pes = await _pessoaServices.getByIdAsync(model.PesId) ?? throw new Exception("Pessoa não encontrada para a transação");
+            model.Cat = await _categoriaService.getByIdAsync(model.CatId) ?? throw new Exception("Categoria não encontrada para a transação");
         }
     }
 }

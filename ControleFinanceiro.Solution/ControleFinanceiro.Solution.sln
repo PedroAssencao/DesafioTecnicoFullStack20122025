@@ -15,6 +15,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "controlefinanceiro.view", "ControleFinanceiro.View\controlefinanceiro.view.esproj", "{FAC4A167-4BDC-25D2-88CC-D2A4D19FFBC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleFinanceiro.Test", "..\ControleFinanceiro.Test\ControleFinanceiro.Test.csproj", "{2EB6780E-F10E-45FF-8083-15BF09170B01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{FAC4A167-4BDC-25D2-88CC-D2A4D19FFBC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAC4A167-4BDC-25D2-88CC-D2A4D19FFBC2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FAC4A167-4BDC-25D2-88CC-D2A4D19FFBC2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{2EB6780E-F10E-45FF-8083-15BF09170B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EB6780E-F10E-45FF-8083-15BF09170B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EB6780E-F10E-45FF-8083-15BF09170B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EB6780E-F10E-45FF-8083-15BF09170B01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
