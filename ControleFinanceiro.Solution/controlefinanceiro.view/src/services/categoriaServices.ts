@@ -42,7 +42,14 @@ export async function cadastrarNovaCategoria(
     });
 
     if (!response.ok) {
-      throw new Error(`Erro: ${response.status}`);
+      const errorData = await response.json();
+      if (errorData.messages && Array.isArray(errorData.messages)) {
+        const errorText = errorData.messages
+          .map((m: any) => m.message)
+          .join("\n");
+        alert(`Erro de validação:\n${errorText}`);
+      }
+      throw errorData;
     }
 
     const resultado: Categoria = await response.json();

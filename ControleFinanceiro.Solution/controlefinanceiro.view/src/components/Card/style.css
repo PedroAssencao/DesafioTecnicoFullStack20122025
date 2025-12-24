@@ -10,16 +10,22 @@
 
 .card-container-header {
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .card-container-body {
   margin-bottom: 1rem;
+  overflow: auto;
 }
 
 .card-sg {
   flex: 1 1 650px;
   max-width: 100vw;
   min-height: 380px;
+  max-height: 380px;
 }
 
 .card-fullScreen {

@@ -9,12 +9,12 @@ public partial class Pessoa
     public string validate(bool? isUpdate = false) //Metodo para validação da entidade
     {
         string errorMsg = string.Empty;
-        errorMsg = validateIdade(this) + ","; //Metodo para validar a idade da pessoa
-        errorMsg = validateNome(this) + ","; //Metodo para validar a nome da pessoa
+        errorMsg += validateIdade(this) + ","; //Metodo para validar a idade da pessoa
+        errorMsg += validateNome(this) + ","; //Metodo para validar a nome da pessoa
 
         if (isUpdate.HasValue && isUpdate.Value == true) //metodos que precisam ser validados apenas na atualização
         {
-            errorMsg = validateId(this) + ",";
+            errorMsg += validateId(this) + ",";
         }
 
         if (errorMsg != "") return errorMsg;

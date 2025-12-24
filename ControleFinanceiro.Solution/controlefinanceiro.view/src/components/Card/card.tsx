@@ -13,12 +13,14 @@ export default function Card(props: {
   tableHead?: string[];
   tableBodyItems?: tbodyItem[];
   title?: string;
+  headerComponent?: ReactNode;
 }) {
   return (
     <div className={`card-container ${props.className || ""}`}>
       {props.hasHeader && (
         <div className="card-container-header">
           <h4>{props.title}</h4>
+          <>{props.headerComponent}</>
         </div>
       )}
       <div className="card-container-body">

@@ -11,9 +11,14 @@ export async function getPessoas(): Promise<Pessoa[]> {
     const response = await fetch(`${apiUrl}v1/Pessoa/BuscarTodasAsPessoas`);
 
     if (!response.ok) {
-      throw new Error(
-        `Erro na requisição: ${response.status} ${response.statusText}`
-      );
+      const errorData = await response.json();
+      if (errorData.messages && Array.isArray(errorData.messages)) {
+        const errorText = errorData.messages
+          .map((m: any) => m.message)
+          .join("\n");
+        alert(`Erro de validação:\n${errorText}`);
+      }
+      throw errorData;
     }
 
     const data: Pessoa[] = await response.json();
@@ -38,11 +43,18 @@ export async function cadastrarNovaPessoa(
     });
 
     if (!response.ok) {
-      throw new Error(`Erro na requisição: ${response.statusText}`);
+      const errorData = await response.json();
+      if (errorData.messages && Array.isArray(errorData.messages)) {
+        const errorText = errorData.messages
+          .map((m: any) => m.message)
+          .join("\n");
+        alert(`Erro de validação:\n${errorText}`);
+      }
+      throw errorData;
     }
 
     const resultado: Pessoa = await response.json();
-    console.log("Pessoa cadastrada com sucesso:", resultado);
+    alert("Pessoa cadastrada com sucesso!");
     return resultado;
   } catch (error) {
     console.error("Falha ao cadastrar pessoa:", error);
@@ -63,11 +75,18 @@ export async function atualizarPessoa(
     });
 
     if (!response.ok) {
-      console.error(`Erro ao atualizar: ${response.status}`);
+      const errorData = await response.json();
+      if (errorData.messages && Array.isArray(errorData.messages)) {
+        const errorText = errorData.messages
+          .map((m: any) => m.message)
+          .join("\n");
+        alert(`Erro de validação:\n${errorText}`);
+      }
       return false;
     }
 
     const sucesso: boolean = await response.json();
+    alert("Pessoa atualizada com sucesso!");
     return sucesso;
   } catch (error) {
     console.error("Falha na comunicação com o servidor:", error);
@@ -87,11 +106,18 @@ export async function deletarPessoa(id: number): Promise<boolean> {
     });
 
     if (!response.ok) {
-      console.error(`Erro ao deletar: ${response.status}`);
+      const errorData = await response.json();
+      if (errorData.messages && Array.isArray(errorData.messages)) {
+        const errorText = errorData.messages
+          .map((m: any) => m.message)
+          .join("\n");
+        alert(`Erro de validação:\n${errorText}`);
+      }
       return false;
     }
 
     const sucesso: boolean = await response.json();
+    alert("Pessoa deletada com sucesso!");
     return sucesso;
   } catch (error) {
     console.error("Falha na comunicação ao tentar deletar:", error);

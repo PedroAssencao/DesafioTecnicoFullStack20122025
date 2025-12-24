@@ -5,6 +5,11 @@
   overflow: hidden;
 }
 
+.table-component thead {
+  position: sticky;
+  top: 0;
+}
+
 .table-component {
   width: 100%;
   border-collapse: collapse;

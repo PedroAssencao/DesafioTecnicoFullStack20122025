@@ -15,12 +15,29 @@ import type { Categoria } from "../../types/baseTypes/Categoria";
 import type { Transacao } from "../../types/baseTypes/Transacao";
 import Loader from "../../components/Loader/Loader";
 import type { tbodyItem } from "../../types/systemTypes/TableInterface";
+import Button from "../../components/Button/Button";
+import Modal from "../../components/Modal/Modal";
+import PessoaForm from "../../components/ModalForms/Pessoa/PessoaFormsModal";
+import CategoriaForm from "../../components/ModalForms/Categoria/CategoriaFormsModal";
+type ModalType =
+  | "PESSOA_CADASTRO"
+  | "CATEGORIA_CADASTRO"
+  | "TRANSACAO"
+  | "EDIT_PESSOA"
+  | null;
 
 export default function Dashboard() {
   const [listPessoas, setListPessoas] = useState<Pessoa[]>([]);
   const [listCategorias, setListCategorias] = useState<Categoria[]>([]);
   const [listTransacoes, setListTransacoes] = useState<Transacao[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
+  const closeModal = () => {
+    setActiveModal(null);
+    setSelectedItem(null);
+  };
 
   async function fetchData() {
     setLoading(true);
@@ -36,16 +53,20 @@ export default function Dashboard() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(listPessoas);
   return (
     <>
       {loading && <Loader />}
-
       <div className={"card-grid-dashboard"}>
         <Card
           className="card-sg"
           hasHeader={true}
           title="Consulta de totais por pessoa"
+          headerComponent={
+            <Button
+              descricao="Nova Pessoa"
+              onClick={() => setActiveModal("PESSOA_CADASTRO")}
+            />
+          }
           hasTable={true}
           tableHead={[
             "Codigo",
@@ -82,6 +103,12 @@ export default function Dashboard() {
           className="card-sg"
           hasHeader={true}
           title="Consulta de totais por categoria"
+          headerComponent={
+            <Button
+              descricao="Nova Categoria"
+              onClick={() => setActiveModal("CATEGORIA_CADASTRO")}
+            />
+          }
           hasTable={true}
           tableHead={[
             "Codigo",
@@ -137,6 +164,45 @@ export default function Dashboard() {
             )}
         />
       </div>
+      <Modal
+        isOpen={activeModal !== null}
+        onClose={closeModal}
+        title={activeModal?.replace("_", " ") || ""}
+      >
+        {(() => {
+          switch (activeModal) {
+            case "PESSOA_CADASTRO":
+              return (
+                <PessoaForm
+                  onSuccess={() => {
+                    fetchData();
+                    closeModal();
+                  }}
+                />
+              );
+            case "CATEGORIA_CADASTRO":
+              return (
+                <CategoriaForm
+                  onSuccess={() => {
+                    fetchData();
+                    closeModal();
+                  }}
+                />
+              );
+            // case "TRANSACAO":
+            //   return (
+            //     <TransacaoForm
+            //       onSuccess={() => {
+            //         fetchData();
+            //         closeModal();
+            //       }}
+            //     />
+            //   );
+            default:
+              return null;
+          }
+        })()}
+      </Modal>
     </>
   );
 }

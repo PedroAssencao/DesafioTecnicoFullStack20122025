@@ -1,11 +1,21 @@
-.custom-button{
-    padding: 8px 16px;
-    border: 1px solid #33363d;
-    border-radius: 6px;
-    cursor: pointer;
+.custom-button {
+  padding: 8px 16px;
+  border: 1px solid #33363d;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.button-delete{
-    background-color: #f87171;
-    color: white;
+.button-delete {
+  background-color: #f87171;
+  color: white;
+}
+
+.close-button {
+  width: 26px;
+  height: 26px;
+  color: white;
+  background-color: #1b1e25;
+  border-radius: 5px;
+  border: 1px solid #33363d;
+  cursor: pointer;
 }

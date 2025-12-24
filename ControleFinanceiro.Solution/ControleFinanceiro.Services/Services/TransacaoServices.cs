@@ -21,7 +21,7 @@ namespace ControleFinanceiro.Services.Services
         public override async Task<Transaco> createAsync(Transaco model)
         {
             // Busca e anexa a Pessoa e Categoria completas para permitir validações de regra de negócio (ex: idade vs tipo)
-            // e garantir que o retorno da API contenha as informações relacionadas.
+            // e garantir que o retorno da API contenha as informações relacionadas.,
             model.Pes = await _pessoaServices.getByIdAsync(model.PesId) ?? throw new Exception("Pessoa não encontrada para a transação");
             model.Cat = await _categoriaService.getByIdAsync(model.CatId) ?? throw new Exception("Categoria não encontrada para a transação");
 

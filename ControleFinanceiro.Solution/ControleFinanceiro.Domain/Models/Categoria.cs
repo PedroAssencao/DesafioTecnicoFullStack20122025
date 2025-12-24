@@ -11,11 +11,11 @@ public partial class Categoria
     public string validate(bool? isUpdate = false) //Metodo para validação da entidade
     {
         string errorMsg = string.Empty;
-        errorMsg = validateDescricao(this) + ","; //Metodo para validar a descricao da categoria
-        errorMsg = validateFinalidade(this) + ","; //Metodo para validar a finalidade da categoria
+        errorMsg += validateDescricao(this) + ","; //Metodo para validar a descricao da categoria
+        errorMsg += validateFinalidade(this) + ","; //Metodo para validar a finalidade da categoria
         if (isUpdate.HasValue && isUpdate.Value == true) //metodos que precisam ser validados apenas na atualização
         {
-            errorMsg = validateId(this) + ",";
+            errorMsg += validateId(this) + ",";
         }
         if (errorMsg != "") return errorMsg;
 
