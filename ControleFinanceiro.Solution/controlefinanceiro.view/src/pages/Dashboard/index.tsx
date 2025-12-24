@@ -19,10 +19,12 @@ import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
 import PessoaForm from "../../components/ModalForms/Pessoa/PessoaFormsModal";
 import CategoriaForm from "../../components/ModalForms/Categoria/CategoriaFormsModal";
+import TransacaoForm from "../../components/ModalForms/Transacoes/TransacoesFormsModal";
+import StatusGeral from "../../components/StatusGeral/StatusGeral";
 type ModalType =
   | "PESSOA_CADASTRO"
   | "CATEGORIA_CADASTRO"
-  | "TRANSACAO"
+  | "TRANSACAO_CADASTRO"
   | "EDIT_PESSOA"
   | null;
 
@@ -32,11 +34,9 @@ export default function Dashboard() {
   const [listTransacoes, setListTransacoes] = useState<Transacao[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeModal, setActiveModal] = useState<ModalType>(null);
-  const [selectedItem, setSelectedItem] = useState<any>(null);
 
   const closeModal = () => {
     setActiveModal(null);
-    setSelectedItem(null);
   };
 
   async function fetchData() {
@@ -57,6 +57,16 @@ export default function Dashboard() {
     <>
       {loading && <Loader />}
       <div className={"card-grid-dashboard"}>
+        <Card
+          className={"card-fullScreen"}
+          hasBodyComponent={true}
+          BodyComponent={
+            <StatusGeral
+              ListCategoria={listCategorias}
+              ListPessoa={listPessoas}
+            />
+          }
+        />
         <Card
           className="card-sg"
           hasHeader={true}
@@ -138,6 +148,12 @@ export default function Dashboard() {
           className="card-sg"
           hasHeader={true}
           title="Ultimas transações"
+          headerComponent={
+            <Button
+              descricao="Nova Transação"
+              onClick={() => setActiveModal("TRANSACAO_CADASTRO")}
+            />
+          }
           hasTable={true}
           tableHead={[
             "Codigo",
@@ -189,15 +205,17 @@ export default function Dashboard() {
                   }}
                 />
               );
-            // case "TRANSACAO":
-            //   return (
-            //     <TransacaoForm
-            //       onSuccess={() => {
-            //         fetchData();
-            //         closeModal();
-            //       }}
-            //     />
-            //   );
+            case "TRANSACAO_CADASTRO":
+              return (
+                <TransacaoForm
+                  onSuccess={() => {
+                    fetchData();
+                    closeModal();
+                  }}
+                  listCategorias={listCategorias}
+                  listPessoas={listPessoas}
+                />
+              );
             default:
               return null;
           }

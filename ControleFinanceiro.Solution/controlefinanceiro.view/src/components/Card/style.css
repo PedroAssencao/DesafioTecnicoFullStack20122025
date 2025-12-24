@@ -19,16 +19,24 @@
 .card-container-body {
   margin-bottom: 1rem;
   overflow: auto;
+  width: 100%;
+  height: 100%;
 }
 
 .card-sg {
-  flex: 1 1 650px;
+  flex: 1 1 610px;
   max-width: 100vw;
   min-height: 380px;
-  max-height: 380px;
+  max-height: 435px;
 }
 
 .card-fullScreen {
   width: 100%;
   min-height: 250px;
+}
+
+@media (max-width: 768px) {
+  .card-sg {
+    max-width: 95.3vw !important;
+  }
 }

@@ -13,8 +13,9 @@ export default function CategoriaForm(props: { onSuccess: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const finalidadeOptions = [
-    { value: 1, label: "Receita" },
-    { value: 2, label: "Despesa" },
+    { value: 1, label: "Despesa" },
+    { value: 2, label: "Receita" },
+    { value: 3, label: "Ambas" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
