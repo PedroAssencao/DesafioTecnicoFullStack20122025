@@ -7,7 +7,7 @@ services:
       ACCEPT_EULA: "Y"
 
     ports:
-       - "1433:1434"
+       - "1434:1433"
     volumes:
       - sql-data:/var/opt/mssql
 
@@ -18,6 +18,23 @@ services:
       dockerfile: ControleFinanceiro.API/Dockerfile
     depends_on:
       - db
+
+  controlefinanceiro.view:
+    container_name: react_frontend_view
+    build:
+      context: ./controlefinanceiro.view
+      dockerfile: Dockerfile
+    depends_on:
+      - controlefinanceiro.api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./controlefinanceiro.view:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true 
+      - WATCHPACK_POLLING=true
+      - VITE_HOST=0.0.0.0
 
 volumes:
   sql-data:

@@ -21,3 +21,8 @@
   border: 1px solid #33363d;
   cursor: pointer;
 }
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
