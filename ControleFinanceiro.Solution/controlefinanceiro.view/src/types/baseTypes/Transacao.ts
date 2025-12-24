@@ -20,5 +20,6 @@ export interface TransacaoCriarDTO {
   valor: number;
   tipo: number;
   categoriaCodigo: number;
+  valorDisplay: string;
   pessoaCodigo: number;
 }

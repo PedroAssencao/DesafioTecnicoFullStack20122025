@@ -8,18 +8,27 @@ export default function Input(props: {
   placeholder?: string;
   required?: boolean;
   className?: string;
-  allowNegative?: boolean;
+  isCurrency?: boolean;
 }) {
-  const handleInputChange = (inputValue: string) => {
-    if (props.type === "number") {
-      let cleanedValue = "";
+  const applyMoneyMask = (value: string) => {
+    const cleanValue = value.replace(/\D/g, "");
 
-      if (props.allowNegative) {
-        cleanedValue = inputValue.replace(/(?!^-)[^0-9]/g, "");
-      } else {
-        cleanedValue = inputValue.replace(/\D/g, "");
-      }
-      props.onChange(cleanedValue);
+    if (!cleanValue) return "";
+
+    const result = new Intl.NumberFormat("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(parseFloat(cleanValue) / 100);
+
+    return result;
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    if (props.isCurrency) {
+      const masked = applyMoneyMask(inputValue);
+      props.onChange(masked);
     } else {
       props.onChange(inputValue);
     }
@@ -28,14 +37,18 @@ export default function Input(props: {
   return (
     <div className={`form-group ${props.className || ""}`}>
       {props.label && <label>{props.label}</label>}
-      <input
-        className="custom-input"
-        type={props.type === "number" ? "text" : props.type || "text"}
-        required={props.required}
-        value={props.value}
-        placeholder={props.placeholder}
-        onChange={(e) => handleInputChange(e.target.value)}
-      />
+      <div className="input-currency-wrapper">
+        <input
+          className={`custom-input ${
+            props.isCurrency ? "input-with-prefix" : ""
+          }`}
+          type="text"
+          required={props.required}
+          value={props.value}
+          placeholder={props.placeholder}
+          onChange={handleInputChange}
+        />
+      </div>
     </div>
   );
 }

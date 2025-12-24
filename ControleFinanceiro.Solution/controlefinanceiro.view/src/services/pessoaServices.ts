@@ -3,21 +3,36 @@ import type {
   PessoaAtualizarDTO,
   PessoaCriarDTO,
 } from "../types/baseTypes/Pessoa";
+import { AlertService } from "../util/alertUtils";
+import Swal from 'sweetalert2';
 
 const apiUrl = "https://localhost:8081/api/";
+
+const handleApiError = async (response: Response) => {
+  const errorData = await response.json();
+  if (errorData.messages && Array.isArray(errorData.messages)) {
+    const errorText = errorData.messages
+      .map((m: any) => m.message)
+      .join("<br>");
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Erro de validação',
+      html: errorText,
+      background: "#1B1E25",
+      color: "#fff",
+      confirmButtonColor: '#d33',
+    });
+  }
+  return errorData;
+};
 
 export async function getPessoas(): Promise<Pessoa[]> {
   try {
     const response = await fetch(`${apiUrl}v1/Pessoa/BuscarTodasAsPessoas`);
 
     if (!response.ok) {
-      const errorData = await response.json();
-      if (errorData.messages && Array.isArray(errorData.messages)) {
-        const errorText = errorData.messages
-          .map((m: any) => m.message)
-          .join("\n");
-        alert(`Erro de validação:\n${errorText}`);
-      }
+      const errorData = await handleApiError(response);
       throw errorData;
     }
 
@@ -43,18 +58,12 @@ export async function cadastrarNovaPessoa(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      if (errorData.messages && Array.isArray(errorData.messages)) {
-        const errorText = errorData.messages
-          .map((m: any) => m.message)
-          .join("\n");
-        alert(`Erro de validação:\n${errorText}`);
-      }
-      throw errorData;
+      await handleApiError(response);
+      return;
     }
 
     const resultado: Pessoa = await response.json();
-    alert("Pessoa cadastrada com sucesso!");
+    AlertService.success("Sucesso", "Pessoa cadastrada com sucesso!");
     return resultado;
   } catch (error) {
     console.error("Falha ao cadastrar pessoa:", error);
@@ -75,18 +84,12 @@ export async function atualizarPessoa(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      if (errorData.messages && Array.isArray(errorData.messages)) {
-        const errorText = errorData.messages
-          .map((m: any) => m.message)
-          .join("\n");
-        alert(`Erro de validação:\n${errorText}`);
-      }
+      await handleApiError(response);
       return false;
     }
 
     const sucesso: boolean = await response.json();
-    alert("Pessoa atualizada com sucesso!");
+    AlertService.success("Sucesso", "Pessoa atualizada com sucesso!");
     return sucesso;
   } catch (error) {
     console.error("Falha na comunicação com o servidor:", error);
@@ -106,18 +109,12 @@ export async function deletarPessoa(id: number): Promise<boolean> {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      if (errorData.messages && Array.isArray(errorData.messages)) {
-        const errorText = errorData.messages
-          .map((m: any) => m.message)
-          .join("\n");
-        alert(`Erro de validação:\n${errorText}`);
-      }
+      await handleApiError(response);
       return false;
     }
 
     const sucesso: boolean = await response.json();
-    alert("Pessoa deletada com sucesso!");
+    AlertService.success("Sucesso", "Pessoa deletada com sucesso!");
     return sucesso;
   } catch (error) {
     console.error("Falha na comunicação ao tentar deletar:", error);

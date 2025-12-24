@@ -2,8 +2,29 @@ import type {
   Categoria,
   CategoriaCriarDTO,
 } from "../types/baseTypes/Categoria";
+import { AlertService } from "../util/alertUtils";
+import Swal from "sweetalert2";
 
 const apiUrl = "https://localhost:8081/api/";
+
+const handleApiError = async (response: Response) => {
+  const errorData = await response.json();
+  if (errorData.messages && Array.isArray(errorData.messages)) {
+    const errorText = errorData.messages
+      .map((m: any) => m.message)
+      .join("<br>");
+
+    Swal.fire({
+      icon: "error",
+      title: "Erro de validação",
+      html: errorText,
+      background: "#1B1E25",
+      color: "#fff",
+      confirmButtonColor: "#d33",
+    });
+  }
+  return errorData;
+};
 
 export async function getCategorias(): Promise<Categoria[]> {
   try {
@@ -18,7 +39,8 @@ export async function getCategorias(): Promise<Categoria[]> {
     );
 
     if (!response.ok) {
-      throw new Error(`Erro: ${response.status}`);
+      const errorData = await handleApiError(response);
+      throw errorData;
     }
 
     return await response.json();
@@ -42,17 +64,12 @@ export async function cadastrarNovaCategoria(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      if (errorData.messages && Array.isArray(errorData.messages)) {
-        const errorText = errorData.messages
-          .map((m: any) => m.message)
-          .join("\n");
-        alert(`Erro de validação:\n${errorText}`);
-      }
+      const errorData = await handleApiError(response);
       throw errorData;
     }
 
     const resultado: Categoria = await response.json();
+    AlertService.success("Sucesso", "Categoria cadastrada com sucesso!");
     return resultado;
   } catch (error) {
     console.error(error);

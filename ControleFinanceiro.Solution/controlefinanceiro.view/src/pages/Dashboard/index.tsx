@@ -21,6 +21,7 @@ import PessoaForm from "../../components/ModalForms/Pessoa/PessoaFormsModal";
 import CategoriaForm from "../../components/ModalForms/Categoria/CategoriaFormsModal";
 import TransacaoForm from "../../components/ModalForms/Transacoes/TransacoesFormsModal";
 import StatusGeral from "../../components/StatusGeral/StatusGeral";
+import { AlertService } from "../../util/alertUtils";
 type ModalType =
   | "PESSOA_CADASTRO"
   | "CATEGORIA_CADASTRO"
@@ -99,12 +100,16 @@ export default function Dashboard() {
                   "R$: " + calcularSaldo(pessoa.transacoes).toFixed(2),
                 ],
                 deleteFunction: async (id: string) => {
-                  const confirm = window.confirm(
-                    "Tem certeza que deseja deletar esta pessoa?"
+                  const confirmou = await AlertService.confirmDelete(
+                    "esta pessoa"
                   );
-                  if (!confirm) return;
-                  await deletarPessoa(parseInt(id));
-                  fetchData();
+
+                  if (confirmou) {
+                    const sucesso = await deletarPessoa(parseInt(id));
+                    if (sucesso) {
+                      fetchData();
+                    }
+                  }
                 },
               } as tbodyItem)
           )}

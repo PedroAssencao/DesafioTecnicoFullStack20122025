@@ -22,6 +22,7 @@ export default function TransacaoForm({
   const [formData, setFormData] = useState<TransacaoCriarDTO>({
     descricao: "",
     valor: 0,
+    valorDisplay: "",
     tipo: 1,
     categoriaCodigo: 0,
     pessoaCodigo: 0,
@@ -58,19 +59,20 @@ export default function TransacaoForm({
         value={formData.descricao}
         onChange={(val) => setFormData({ ...formData, descricao: val })}
       />
-
       <Input
         label="Valor"
-        type="number"
-        placeholder="0.00"
-        required
-        allowNegative={false}
-        value={formData.valor || ""}
-        onChange={(val) =>
-          setFormData({ ...formData, valor: parseFloat(val) || 0 })
-        }
-      />
+        isCurrency={true}
+        value={formData.valorDisplay || ""}
+        onChange={(val) => {
+          setFormData({ ...formData, valorDisplay: val });
+          const numericValue = val.replace(/\./g, "").replace(",", ".");
 
+          setFormData((prev) => ({
+            ...prev,
+            valor: parseFloat(numericValue) || 0,
+          }));
+        }}
+      />
       <Select
         label="Tipo"
         required
@@ -78,7 +80,6 @@ export default function TransacaoForm({
         value={formData.tipo}
         onChange={(val) => setFormData({ ...formData, tipo: parseInt(val) })}
       />
-
       <Select
         label="Categoria"
         required
@@ -91,7 +92,6 @@ export default function TransacaoForm({
           setFormData({ ...formData, categoriaCodigo: parseInt(val) })
         }
       />
-
       <Select
         label="Pessoa"
         required
@@ -101,7 +101,6 @@ export default function TransacaoForm({
           setFormData({ ...formData, pessoaCodigo: parseInt(val) })
         }
       />
-
       <div className="form-actions">
         <Button
           descricao={isSubmitting ? "Processando..." : "Lançar Transação"}
