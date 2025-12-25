@@ -22,7 +22,7 @@ Siga os passos abaixo para configurar e rodar o projeto.
    * inicialize o projeto via visual studio ou usando comando do cli dotnet run
 3. **Frontend:**
    * Navegue ate `controlefinanceiro.view`.
-   * Renomeie o arquivo `.env.example` para `.env`.
+   * Renomeie o arquivo `.env.example` para `.env`, seguir instruções do proprio arquivo para configuração de url da api
    * iniciar usando npm run dev
 
 ### 2. Executando com Docker (Recomendado)
@@ -34,4 +34,4 @@ O projeto utiliza Docker Compose para orquestrar a API, o Banco de Dados (SQL Se
    docker-compose up -d --build
 
 ### 3. Obs
-Em ambos os casos da instalação, a api deve estar localizada na porta 8081(https ou iiexpress), e a aplciação front end estara em localhost 3000
+Em ambos os casos da instalação, a aplciação front end deve estar localizada em localhost:3000
