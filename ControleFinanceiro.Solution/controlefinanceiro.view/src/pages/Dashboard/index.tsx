@@ -214,7 +214,6 @@ export default function Dashboard() {
           closeModal();
           setSelectedPessoa(null); // Limpa a seleção ao fechar para não bugar o próximo "Novo"
         }}
-        /* Título dinâmico: Se houver pessoa selecionada, mostra "EDITAR", senão mostra o nome do modal */
         title={activeModal?.replace("_", " ") || ""}
       >
         {(() => {
