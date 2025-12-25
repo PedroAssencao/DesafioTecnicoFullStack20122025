@@ -1,28 +1,71 @@
-import { useState } from "react";
-import { type PessoaCriarDTO } from "../../../types/baseTypes/Pessoa";
-import { cadastrarNovaPessoa } from "../../../services/pessoaServices";
-import Button from "../../Button/Button";
-import Input from "../../Input/Input";
+import { useState, useEffect } from "react";
+import {
+  type Pessoa,
+  type PessoaCriarDTO,
+  type PessoaAtualizarDTO,
+} from "../../../types/baseTypes/Pessoa";
+import {
+  cadastrarNovaPessoa,
+  atualizarPessoa,
+} from "../../../services/pessoaServices";
+import Button from "../../BaseComponents/Button/Button";
+import Input from "../../BaseComponents/Input/Input";
 import "./style.css";
 
-export default function PessoaForm(props: { onSuccess: () => void }) {
-  const [formData, setFormData] = useState<PessoaCriarDTO>({
+// Adicionamos a prop pessoaParaEditar
+export default function PessoaForm(props: {
+  onSuccess: () => void;
+  pessoaParaEditar?: Pessoa | null;
+}) {
+  const [formData, setFormData] = useState({
+    codigo: 0,
     nome: "",
     idade: 0,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Se houver pessoa para editar, preenche o formulário ao carregar
+  useEffect(() => {
+    if (props.pessoaParaEditar) {
+      setFormData({
+        codigo: props.pessoaParaEditar.codigo,
+        nome: props.pessoaParaEditar.nome,
+        idade: props.pessoaParaEditar.idade,
+      });
+    }
+  }, [props.pessoaParaEditar]);
+
+  const isEditing = formData.codigo > 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      const resultado = await cadastrarNovaPessoa(formData);
+      let resultado;
+
+      if (isEditing) {
+        // Modo Edição
+        const dadosUpdate: PessoaAtualizarDTO = {
+          codigo: formData.codigo,
+          nome: formData.nome,
+          idade: formData.idade,
+        };
+        resultado = await atualizarPessoa(dadosUpdate);
+      } else {
+        // Modo Cadastro
+        const dadosCreate: PessoaCriarDTO = {
+          nome: formData.nome,
+          idade: formData.idade,
+        };
+        resultado = await cadastrarNovaPessoa(dadosCreate);
+      }
+
       if (resultado) {
         props.onSuccess();
       }
     } catch (error) {
-      alert("Erro ao cadastrar pessoa.");
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -30,6 +73,7 @@ export default function PessoaForm(props: { onSuccess: () => void }) {
 
   return (
     <form onSubmit={handleSubmit} className="modal-form">
+      {/* O código fica oculto, mas presente no estado do formulário */}
       <Input
         label="Nome"
         placeholder="Ex: Pedro Assenção"
@@ -44,7 +88,6 @@ export default function PessoaForm(props: { onSuccess: () => void }) {
         placeholder="Ex: 21"
         required
         value={formData.idade || ""}
-        allowNegative={false}
         onChange={(val) =>
           setFormData({ ...formData, idade: parseInt(val) || 0 })
         }
@@ -52,7 +95,13 @@ export default function PessoaForm(props: { onSuccess: () => void }) {
 
       <div className="form-actions">
         <Button
-          descricao={isSubmitting ? "Salvando..." : "Cadastrar"}
+          descricao={
+            isSubmitting
+              ? "Processando..."
+              : isEditing
+              ? "Salvar Alterações"
+              : "Cadastrar"
+          }
           className="button-save"
           typeButton="submit"
         />

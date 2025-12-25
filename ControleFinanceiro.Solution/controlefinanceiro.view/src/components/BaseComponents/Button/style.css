@@ -12,6 +12,11 @@
   color: white;
 }
 
+.button-edit {
+  background-color: #1B1E25;
+  color: white;
+}
+
 .close-button {
   width: 26px;
   height: 26px;

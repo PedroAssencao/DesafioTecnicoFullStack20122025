@@ -2,29 +2,10 @@ import type {
   Categoria,
   CategoriaCriarDTO,
 } from "../types/baseTypes/Categoria";
-import { AlertService } from "../util/alertUtils";
-import Swal from "sweetalert2";
+import { AlertService, handleApiError } from "../util/alertUtils";
 
 const apiUrl = "https://localhost:8081/api/";
 
-const handleApiError = async (response: Response) => {
-  const errorData = await response.json();
-  if (errorData.messages && Array.isArray(errorData.messages)) {
-    const errorText = errorData.messages
-      .map((m: any) => m.message)
-      .join("<br>");
-
-    Swal.fire({
-      icon: "error",
-      title: "Erro de validação",
-      html: errorText,
-      background: "#1B1E25",
-      color: "#fff",
-      confirmButtonColor: "#d33",
-    });
-  }
-  return errorData;
-};
 
 export async function getCategorias(): Promise<Categoria[]> {
   try {

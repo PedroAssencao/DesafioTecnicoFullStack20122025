@@ -5,10 +5,15 @@ import Dashboard from "./pages/Dashboard";
 function App() {
   return (
     <>
+      {/* Header fixo para navegação global da aplicação. */}
       <Header />
+
+      {/* Container principal que centraliza o Dashboard de controle financeiro. */}
       <div className={"container-fluid"}>
         <Dashboard />
       </div>
+
+      {/* Rodapé institucional com informações básicas do sistema. */}
       <Footer />
     </>
   );

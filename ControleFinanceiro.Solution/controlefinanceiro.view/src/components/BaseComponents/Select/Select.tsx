@@ -1,4 +1,6 @@
 import "./style.css";
+
+// Define a estrutura padrão para as opções do dropdown.
 interface Option {
   value: string | number;
   label: string;
@@ -13,6 +15,7 @@ interface SelectProps {
   className?: string;
 }
 
+// Componente de seleção customizado para garantir a consistência visual dos formulários.
 export default function Select(props: SelectProps) {
   return (
     <div className={`form-group ${props.className || ""}`}>
@@ -23,7 +26,10 @@ export default function Select(props: SelectProps) {
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
       >
+        {/* Placeholder padrão para incentivar a seleção explícita pelo usuário. */}
         <option value="">Selecione...</option>
+
+        {/* Renderização dinâmica das opções baseada nas listas enviadas via props. */}
         {props.options.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}

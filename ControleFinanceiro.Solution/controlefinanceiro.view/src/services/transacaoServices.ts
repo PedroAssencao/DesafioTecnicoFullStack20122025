@@ -2,30 +2,11 @@ import type {
   Transacao,
   TransacaoCriarDTO,
 } from "../types/baseTypes/Transacao";
-import { AlertService } from "../util/alertUtils";
-import Swal from "sweetalert2";
+import { AlertService, handleApiError } from "../util/alertUtils";
 
 const apiUrl = "https://localhost:8081/api/";
 
-const handleApiError = async (response: Response) => {
-  const errorData = await response.json();
-  if (errorData.messages && Array.isArray(errorData.messages)) {
-    const errorText = errorData.messages
-      .map((m: any) => m.message)
-      .join("<br>");
-
-    Swal.fire({
-      icon: "error",
-      title: "Erro de validação",
-      background: "#1B1E25",
-      color: "#fff",
-      html: errorText,
-      confirmButtonColor: "#d33",
-    });
-  }
-  return errorData;
-};
-
+// Busca todas as transações para alimentar o histórico e os relatórios de totais.
 export async function getTransacoes(): Promise<Transacao[]> {
   try {
     const response = await fetch(
@@ -50,6 +31,7 @@ export async function getTransacoes(): Promise<Transacao[]> {
   }
 }
 
+// Envia os dados para criação de transação, validando as regras de negócio no servidor.
 export async function cadastrarNovaTransacao(
   dados: TransacaoCriarDTO
 ): Promise<Transacao | void> {
@@ -69,6 +51,7 @@ export async function cadastrarNovaTransacao(
     }
 
     const resultado: Transacao = await response.json();
+    // Feedback visual positivo utilizando o serviço de alertas customizado.
     AlertService.success("Sucesso", "Transação realizada com sucesso!");
     return resultado;
   } catch (error) {

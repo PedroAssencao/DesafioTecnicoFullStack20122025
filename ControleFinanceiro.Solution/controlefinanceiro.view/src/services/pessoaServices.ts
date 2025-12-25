@@ -3,30 +3,11 @@ import type {
   PessoaAtualizarDTO,
   PessoaCriarDTO,
 } from "../types/baseTypes/Pessoa";
-import { AlertService } from "../util/alertUtils";
-import Swal from 'sweetalert2';
+import { AlertService, handleApiError } from "../util/alertUtils";
 
 const apiUrl = "https://localhost:8081/api/";
 
-const handleApiError = async (response: Response) => {
-  const errorData = await response.json();
-  if (errorData.messages && Array.isArray(errorData.messages)) {
-    const errorText = errorData.messages
-      .map((m: any) => m.message)
-      .join("<br>");
-    
-    Swal.fire({
-      icon: 'error',
-      title: 'Erro de validação',
-      html: errorText,
-      background: "#1B1E25",
-      color: "#fff",
-      confirmButtonColor: '#d33',
-    });
-  }
-  return errorData;
-};
-
+// Obtém a lista de pessoas para preenchimento de tabelas e selects.
 export async function getPessoas(): Promise<Pessoa[]> {
   try {
     const response = await fetch(`${apiUrl}v1/Pessoa/BuscarTodasAsPessoas`);
@@ -44,6 +25,7 @@ export async function getPessoas(): Promise<Pessoa[]> {
   }
 }
 
+// Realiza o cadastro de uma nova pessoa no sistema.
 export async function cadastrarNovaPessoa(
   dados: PessoaCriarDTO
 ): Promise<Pessoa | void> {
@@ -70,6 +52,7 @@ export async function cadastrarNovaPessoa(
   }
 }
 
+// Atualiza dados de uma pessoa existente (Recurso adicional ao desafio).
 export async function atualizarPessoa(
   dados: PessoaAtualizarDTO
 ): Promise<boolean> {
@@ -97,6 +80,7 @@ export async function atualizarPessoa(
   }
 }
 
+// Remove uma pessoa e dispara a regra de exclusão de transações vinculadas.
 export async function deletarPessoa(id: number): Promise<boolean> {
   try {
     const urlComParametro = `${apiUrl}v1/Pessoa/DeletarPessoa?id=${id}`;

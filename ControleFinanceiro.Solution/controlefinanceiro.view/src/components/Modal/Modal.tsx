@@ -1,17 +1,19 @@
 import "./style.css";
 
+// Componente de sobreposição (Overlay) para exibição de formulários de cadastro e edição.
 export default function Modal(props: {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  size?: string;
+  isOpen: boolean; // Controla a visibilidade do modal.
+  onClose: () => void; // Função para fechar o modal e restaurar o estado da página.
+  title: string; // Título dinâmico (ex: "PESSOA CADASTRO").
+  children: React.ReactNode; // Conteúdo interno (PessoaForm, TransacaoForm, etc).
+  size?: string; // Permite definir larguras diferentes conforme a necessidade do formulário.
 }) {
+  // Gerencia o comportamento do scroll da página principal para evitar conflitos visuais.
   if (props.isOpen) {
     document.querySelector("body")?.style.setProperty("overflow", "hidden");
   } else {
     document.querySelector("body")?.style.removeProperty("overflow");
-    return null;
+    return null; // Não renderiza nada se o modal estiver fechado.
   }
 
   return (

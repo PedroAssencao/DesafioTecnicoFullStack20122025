@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { cadastrarNovaCategoria } from "../../../services/categoriaServices";
-import Button from "../../Button/Button";
-import Input from "../../Input/Input";
-import Select from "../../Select/Select";
+import Button from "../../BaseComponents/Button/Button";
+import Input from "../../BaseComponents/Input/Input";
+import Select from "../../BaseComponents/Select/Select";
 import "./style.css";
 
+// Formulário para criação de categorias, essencial para a regra de restrição de transações.
 export default function CategoriaForm(props: { onSuccess: () => void }) {
   const [formData, setFormData] = useState({
     nome: "",
@@ -12,6 +13,7 @@ export default function CategoriaForm(props: { onSuccess: () => void }) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Opções que definem se a categoria aceita receitas, despesas ou ambos os tipos.
   const finalidadeOptions = [
     { value: 1, label: "Despesa" },
     { value: 2, label: "Receita" },
@@ -22,9 +24,11 @@ export default function CategoriaForm(props: { onSuccess: () => void }) {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Envio dos dados para o service que comunica com a WebApi.
     const resultado = await cadastrarNovaCategoria(formData);
     try {
       if (resultado) {
+        // Callback para atualizar a listagem no dashboard e fechar o modal.
         props.onSuccess();
       }
     } finally {

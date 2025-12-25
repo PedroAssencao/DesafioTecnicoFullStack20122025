@@ -6,7 +6,7 @@ import {
   calcularTotalDespesas,
   calcularSaldo,
 } from "../../util/financeUtils";
-import Select from "../Select/Select";
+import Select from "../BaseComponents/Select/Select";
 import "./style.css";
 
 interface StatusGeralProps {
@@ -14,14 +14,15 @@ interface StatusGeralProps {
   ListCategoria: Categoria[];
 }
 
+// Componente da Dashboard que consolida os totais gerais
 export default function StatusGeral({
   ListPessoa,
   ListCategoria,
 }: StatusGeralProps) {
   const [visao, setVisao] = useState<"pessoa" | "categoria">("pessoa");
 
+  // Consolida todas as transações da lista selecionada para realizar o cálculo global.
   const transacoesConsolidadas = useMemo(() => {
-    // console.log("Passou aqui");
     if (visao === "pessoa") {
       return ListPessoa.flatMap((p) => p.transacoes || []);
     } else {
@@ -29,6 +30,7 @@ export default function StatusGeral({
     }
   }, [visao, ListPessoa, ListCategoria]);
 
+  // Aplica as funções utilitárias para obter os somatórios finais.
   const totalReceitas = calcularTotalReceitas(transacoesConsolidadas);
   const totalDespesas = calcularTotalDespesas(transacoesConsolidadas);
   const saldoGeral = calcularSaldo(transacoesConsolidadas);
@@ -48,16 +50,19 @@ export default function StatusGeral({
       </div>
 
       <div className="status-geral-grid">
+        {/* Exibição do somatório de receitas conforme requisito. */}
         <div className="status-card receita">
           <span className="card-label">Total Receitas</span>
           <h2 className="card-value">R$ {totalReceitas.toFixed(2)}</h2>
         </div>
 
+        {/* Exibição do somatório de despesas conforme requisito. */}
         <div className="status-card despesa">
           <span className="card-label">Total Despesas</span>
           <h2 className="card-value">R$ {totalDespesas.toFixed(2)}</h2>
         </div>
 
+        {/* Exibição do saldo líquido (Receita - Despesa) com destaque visual para valores negativos. */}
         <div className="status-card saldo">
           <span className="card-label">Saldo Geral</span>
           <h2

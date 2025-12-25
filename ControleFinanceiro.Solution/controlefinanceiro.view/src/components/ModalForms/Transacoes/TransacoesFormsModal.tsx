@@ -3,9 +3,9 @@ import { type TransacaoCriarDTO } from "../../../types/baseTypes/Transacao";
 import { type Pessoa } from "../../../types/baseTypes/Pessoa";
 import { type Categoria } from "../../../types/baseTypes/Categoria";
 import { cadastrarNovaTransacao } from "../../../services/transacaoServices";
-import Button from "../../Button/Button";
-import Input from "../../Input/Input";
-import Select from "../../Select/Select";
+import Button from "../../BaseComponents/Button/Button";
+import Input from "../../BaseComponents/Input/Input";
+import Select from "../../BaseComponents/Select/Select";
 import "./style.css";
 
 interface TransacaoFormProps {
@@ -29,21 +29,28 @@ export default function TransacaoForm({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Memoiza a pessoa selecionada para evitar reprocessamento desnecessário.
   const pessoaSelecionada = useMemo(
     () => listPessoas.find((p) => p.codigo === formData.pessoaCodigo),
     [listPessoas, formData.pessoaCodigo]
   );
 
+  // Regra de Negócio: Verifica se o usuário é menor de idade para aplicar restrições.
   const isMenorDeIdade = pessoaSelecionada
     ? pessoaSelecionada.idade < 18
     : false;
+
+  // Impede a seleção de 'Receita' (tipo 2) para menores de 18 anos.
   const isTipoInvalidoParaMenor = isMenorDeIdade && formData.tipo === 2;
 
+  // Filtra as categorias dinamicamente baseada na Finalidade (Receita/Despesa/Ambas) e no Tipo selecionado.
   const categoriasFiltradas = useMemo(() => {
     return listCategorias.filter((cat) => {
       if (formData.tipo === 1)
+        // Despesa
         return cat.finalidade.codigo === 1 || cat.finalidade.codigo === 3;
       if (formData.tipo === 2)
+        // Receita
         return cat.finalidade.codigo === 2 || cat.finalidade.codigo === 3;
       return true;
     });
@@ -109,6 +116,7 @@ export default function TransacaoForm({
           setFormData({
             ...formData,
             pessoaCodigo: pCod,
+            // Ajuste automático: se for menor, muda o tipo para Despesa automaticamente.
             tipo: p && p.idade < 18 ? 1 : formData.tipo,
           });
         }}
@@ -123,7 +131,7 @@ export default function TransacaoForm({
           setFormData({
             ...formData,
             tipo: parseInt(val),
-            categoriaCodigo: 0,
+            categoriaCodigo: 0, // Reseta a categoria ao mudar o tipo para evitar inconsistências.
           });
         }}
       />
@@ -141,6 +149,7 @@ export default function TransacaoForm({
         }
       />
 
+      {/* Alerta visual de impedimento de receita para menores de idade. */}
       {isTipoInvalidoParaMenor && (
         <div style={{ color: "red", fontSize: "12px", marginBottom: "10px" }}>
           Menores de 18 anos não podem lançar receitas.
@@ -152,6 +161,7 @@ export default function TransacaoForm({
           descricao={isSubmitting ? "Processando..." : "Lançar Transação"}
           className="button-save"
           typeButton="submit"
+          // Botão desabilitado se as regras de negócio ou preenchimento básico não forem atendidos.
           disabled={
             isSubmitting ||
             isTipoInvalidoParaMenor ||
