@@ -4,7 +4,7 @@ import type {
 } from "../types/baseTypes/Transacao";
 import { AlertService, handleApiError } from "../util/alertUtils";
 
-const apiUrl = "https://localhost:8081/api/";
+const apiUrl = import.meta.env.API_URL;
 
 // Busca todas as transações para alimentar o histórico e os relatórios de totais.
 export async function getTransacoes(): Promise<Transacao[]> {
@@ -20,6 +20,7 @@ export async function getTransacoes(): Promise<Transacao[]> {
     );
 
     if (!response.ok) {
+      console.log(response)
       const errorData = await handleApiError(response);
       throw errorData;
     }

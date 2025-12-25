@@ -4,7 +4,7 @@ import type {
 } from "../types/baseTypes/Categoria";
 import { AlertService, handleApiError } from "../util/alertUtils";
 
-const apiUrl = "https://localhost:8081/api/";
+const apiUrl = import.meta.env.API_URL;
 
 
 export async function getCategorias(): Promise<Categoria[]> {

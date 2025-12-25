@@ -4,7 +4,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__Chinook=Server=db,1433;Database=ChatBotDb;User Id=sa;Password=SenhaBancoDeDadosTeste.123;TrustServerCertificate=True
+      - ConnectionStrings__Chinook=Server=db,1433;Database=ControleFinanceiroDB;User Id=sa;Password=SenhaBancoDeDadosTeste.123;TrustServerCertificate=True
     ports:
       - "8080:8080"
       - "8081:8081"

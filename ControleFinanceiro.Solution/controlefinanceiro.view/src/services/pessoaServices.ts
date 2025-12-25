@@ -5,7 +5,7 @@ import type {
 } from "../types/baseTypes/Pessoa";
 import { AlertService, handleApiError } from "../util/alertUtils";
 
-const apiUrl = "https://localhost:8081/api/";
+const apiUrl = import.meta.env.API_URL;
 
 // Obtém a lista de pessoas para preenchimento de tabelas e selects.
 export async function getPessoas(): Promise<Pessoa[]> {
