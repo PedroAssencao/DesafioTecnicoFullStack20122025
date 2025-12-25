@@ -45,6 +45,10 @@ namespace ControleFinanceiro.API.Extensions
                            .AllowAnyHeader()
                            .AllowCredentials()
                            .AllowAnyMethod();
+                    builder.WithOrigins("https://desafio-tecnico-full-stack20122025-rust.vercel.app")
+                           .AllowAnyHeader()
+                           .AllowCredentials()
+                           .AllowAnyMethod();
                     //builder.AllowAnyOrigin()
                     //       .AllowAnyHeader()
                     //       .AllowAnyMethod();
